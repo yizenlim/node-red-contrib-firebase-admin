@@ -9,7 +9,7 @@ module.exports = function(RED) {
     RED.nodes.createNode(this, config);
     var node = this;
 
-    const cb = (res)=>{
+    const cb = (res ,)=>{
       console.log('firebase get result '+res)
       //console.dir(res)
       let val = res.val()
@@ -18,7 +18,7 @@ module.exports = function(RED) {
         msgin.payload = val
         node.send(msgin)
       } else {
-        node.send({payload: val})
+        node.send({payload: val , })
       }
 
     }
@@ -29,19 +29,26 @@ module.exports = function(RED) {
 
       var query;
       var oldPathQuery;
+      var pathString = [];
       if(path !=null){
-        
+        pathString.push({"path":path.toString()})
         query = this.admin.database().ref(path)}
        if (oldpath!=null ){
+        pathString.push({"oldpath":oldpath.toString()})
+        
         oldPathQuery =  this.admin.database().ref(oldpath);
        }
     
        if(orderbychild!=null && orderbychild != "" && orderbychild !== "undefined"){
         if(oldpath!=null&& oldPathQuery !=null){
          oldPathQuery = oldPathQuery.orderByChild(orderbychild)
+         pathString.push({"oldPathQuery":oldPathQuery.toString()})
+    
         }
         if(path!=null){
           query= query.orderByChild(orderbychild)
+      
+          pathString.push({"query":query.toString()})
           oldpath = path
         }  else {
           console.log('----- rtdb-on got empty path !!')
@@ -53,9 +60,13 @@ module.exports = function(RED) {
       if(limittofirst!=null && limittofirst != "" && limittofirst !== "undefined"){
         if(oldpath!=null&& oldPathQuery !=null){
          oldPathQuery = oldPathQuery.limitToFirst(limittofirst)
+         pathString.push({"oldPathQuery":oldPathQuery.toString()})
         }
         if(path!=null){
+          
           query= query.limitToFirst(limittofirst)
+          pathString.push({"query":query.toString()})
+
           oldpath = path
         }  else {
           console.log('----- rtdb-on got empty path !!')
@@ -66,10 +77,12 @@ module.exports = function(RED) {
        
       if(ontype!=null&& oldPathQuery !=null){
         if(oldpath!=null){
-         oldPathQuery = oldPathQuery.off(ontype, cb)
+        oldPathQuery.off(ontype, cb)
+         pathString.push({"oldPathQuery":oldPathQuery.toString()})
         }
         if(path!=null){
-          query= query.on(ontype, cb)
+         query.on(ontype, cb)
+          pathString.push({"query":query.toString()})
           oldpath = path
         }  else {
           console.log('----- rtdb-on got empty path !!')
@@ -80,15 +93,20 @@ module.exports = function(RED) {
       
       {
       if(oldpath!=null && oldPathQuery !=null){
-        oldPathQuery = oldPathQuery.off('value', cb)
-      }
+          oldPathQuery.off('value', cb)
+          pathString.push({"oldPathQuery":oldPathQuery.toString()})
+        }
       if(path!=null){
-        query= query.on('value', cb)
-        oldpath = path
+       query.on('value', cb)
+       pathString.push({"query":query.toString()})
+       oldpath = path
       }  else {
         console.log('----- rtdb-on got empty path !!')
         console.dir(config)
       }}
+      node.send({"pathString":pathString})
+
+      
     }
 
     if(config.cred){
