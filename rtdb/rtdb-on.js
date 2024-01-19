@@ -50,7 +50,7 @@ module.exports = function(RED) {
 
       } 
        
-      if(orderbychild){
+      if(limittofirst){
         if(oldpath){
          oldPathQuery = oldPathQuery.limitToFirst(limittofirst)
         }
