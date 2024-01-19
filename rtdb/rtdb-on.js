@@ -9,7 +9,7 @@ module.exports = function(RED) {
     RED.nodes.createNode(this, config);
     var node = this;
 
-    const cb = (res ,)=>{
+    const cb = (res )=>{
       console.log('firebase get result '+res)
       //console.dir(res)
       let val = res.val()
