@@ -28,26 +28,20 @@ module.exports = function(RED) {
 
 
       var query;
-      var oldPathQuery;
       var pathString = [];
+
+      if(oldpath){
+        this.admin.database().ref(oldpath).off(ontype, cb)
+      }
+
       if(path !=null){
         pathString.push({"path":path.toString()})
         query = this.admin.database().ref(path)}
-       if (oldpath!=null ){
-        pathString.push({"oldpath":oldpath.toString()})
-        
-        oldPathQuery =  this.admin.database().ref(oldpath);
-       }
-    
+  
        if(orderbychild!=null && orderbychild != "" && orderbychild !== "undefined"){
-        if(oldpath!=null&& oldPathQuery !=null){
-         oldPathQuery = oldPathQuery.orderByChild(orderbychild)
-         pathString.push({"oldPathQuery":oldPathQuery.toString()})
-    
-        }
+     
         if(path!=null){
           query= query.orderByChild(orderbychild)
-      
           pathString.push({"query":query.toString()})
           oldpath = path
         }  else {
@@ -58,15 +52,11 @@ module.exports = function(RED) {
       } 
        
       if(limittolast!=null && limittolast != "" && limittolast !== "undefined"){
-        if(oldpath!=null&& oldPathQuery !=null){
-         oldPathQuery = oldPathQuery.limitToLast(limittolast)
-         pathString.push({"oldPathQuery":oldPathQuery.toString()})
-        }
+  
         if(path!=null){
           
           query= query.limitToLast(limittolast)
           pathString.push({"query":query.toString()})
-
           oldpath = path
         }  else {
           console.log('----- rtdb-on got empty path !!')
@@ -76,10 +66,7 @@ module.exports = function(RED) {
       } 
        
       if(ontype!=null&& oldPathQuery !=null){
-        if(oldpath!=null){
-        oldPathQuery.off(ontype, cb)
-         pathString.push({"oldPathQuery":oldPathQuery.toString()})
-        }
+
         if(path!=null){
          query.on(ontype, cb)
           pathString.push({"query":query.toString()})
@@ -92,10 +79,7 @@ module.exports = function(RED) {
       }  else       
       
       {
-      if(oldpath!=null && oldPathQuery !=null){
-          oldPathQuery.off('value', cb)
-          pathString.push({"oldPathQuery":oldPathQuery.toString()})
-        }
+
       if(path!=null){
        query.on('value', cb)
        pathString.push({"query":query.toString()})
