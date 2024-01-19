@@ -7,7 +7,7 @@
       name: {value:""},
       path: {value:""},
       ontype: {value:""},
-      limittofirst: {value:""},
+      limittolast: {value:1},
       orderbychild: {value:""},
       cred: {value: "", type: 'firebase-config'}
     },
@@ -54,7 +54,7 @@
 
   <div class="form-row">
     <label for="node-input-ontype"><i class="icon-tag"></i> Limit To First</label>
-    <input type="text" id="node-input-limittofirst" placeholder="Limit To First">
+    <input type="text" id="node-input-limittolast" placeholder="Limit To First">
 </div>
 
 <div class="form-row">
@@ -75,7 +75,7 @@
 <script type="text/x-red" data-help-name="rtdb-on">
     <p>Get data from a path in the rtdb database </p>
 <p>
-input: {"payload": {"path": "foo/bar" , "ontype" : "child_added" , "limittofirst": 2, "orderbychild": "height"}}
+input: {"payload": {"path": "foo/bar" , "ontype" : "child_added" , "limittolast": 2, "orderbychild": "height"}}
 </p><p>
 output: whatever data was at the path "foo/bar" in the rtdb database</p>
 </p>

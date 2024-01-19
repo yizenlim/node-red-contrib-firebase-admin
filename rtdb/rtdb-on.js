@@ -23,7 +23,7 @@ module.exports = function(RED) {
 
     }
 
-    let setUpListener = (path, ontype , limittofirst, orderbychild)=>{
+    let setUpListener = (path, ontype , limittolast, orderbychild)=>{
       console.log('rtdb-on setUpListener for path '+path)
 
 
@@ -57,14 +57,14 @@ module.exports = function(RED) {
 
       } 
        
-      if(limittofirst!=null && limittofirst != "" && limittofirst !== "undefined"){
+      if(limittolast!=null && limittolast != "" && limittolast !== "undefined"){
         if(oldpath!=null&& oldPathQuery !=null){
-         oldPathQuery = oldPathQuery.limitToFirst(limittofirst)
+         oldPathQuery = oldPathQuery.limitToLast(limittolast)
          pathString.push({"oldPathQuery":oldPathQuery.toString()})
         }
         if(path!=null){
           
-          query= query.limitToFirst(limittofirst)
+          query= query.limitToLast(limittolast)
           pathString.push({"query":query.toString()})
 
           oldpath = path
@@ -118,18 +118,18 @@ module.exports = function(RED) {
     //console.dir(config)
     this.path = config.path
     this.ontype = config.ontype
-    this.limittofirst = config.limittofirst
+    this.limittolast = config.limittolast
     this.orderbychild = config.orderbychild
 
 
     if (this.ontype ){
       if(this.path){
-        setUpListener(this.path,this.ontype, this.limittofirst,this.orderbychild)
+        setUpListener(this.path,this.ontype, this.limittolast,this.orderbychild)
       }  
     }
     else
     if(this.path){
-      setUpListener(this.path,this.ontype, this.limittofirst,this.orderbychild)
+      setUpListener(this.path,this.ontype, this.limittolast,this.orderbychild)
     }
 
 
@@ -137,18 +137,18 @@ module.exports = function(RED) {
     node.on('input', function(msg) {
       let path = this.path
       let ontype = this.ontype
-      let limittofirst = this.limittofirst
+      let limittolast = this.limittolast
       let orderbychild = this.orderbychild
 
       if(msg && msg.payload){
         path = path || msg.payload.path
         ontype = ontype || msg.payload.ontype
-        limittofirst = limittofirst || msg.payload.limittofirst
+        limittolast = limittolast || msg.payload.limittolast
         orderbychild = orderbychild || msg.payload.orderbychild
 
         
         msgin = msg
-        setUpListener(path , ontype , limittofirst, orderbychild)
+        setUpListener(path , ontype , limittolast, orderbychild)
       }
     }.bind(this));
 
