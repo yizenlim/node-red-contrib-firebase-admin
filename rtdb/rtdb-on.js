@@ -36,7 +36,7 @@ module.exports = function(RED) {
         oldPathQuery =  this.admin.database().ref(oldpath);
        }
     
-       if(orderbychild!=null){
+       if(orderbychild!=null && orderbychild != "" && orderbychild !== "undefined"){
         if(oldpath!=null&& oldPathQuery !=null){
          oldPathQuery = oldPathQuery.orderByChild(orderbychild)
         }
@@ -50,7 +50,7 @@ module.exports = function(RED) {
 
       } 
        
-      if(limittofirst!=null){
+      if(limittofirst!=null && limittofirst != "" && limittofirst !== "undefined"){
         if(oldpath!=null&& oldPathQuery !=null){
          oldPathQuery = oldPathQuery.limitToFirst(limittofirst)
         }
