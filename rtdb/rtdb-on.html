@@ -6,6 +6,7 @@
     defaults: {
       name: {value:""},
       path: {value:""},
+      ontype: {value:""},
       cred: {value: "", type: 'firebase-config'}
     },
     inputs:1,
@@ -33,7 +34,7 @@
 
 </script>
 
-<script type="text/x-red" data-template-name="rtdb-on">
+<script type="text/html" data-template-name="rtdb-on">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -45,17 +46,36 @@
     </div>
 
     <div class="form-row">
+      <label for="node-input-ontype"><i class="icon-tag"></i> On Type</label>
+      <input type="text" id="node-input-ontype" placeholder="On Type">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-ontype"><i class="icon-tag"></i> Limit To First</label>
+    <input type="text" id="node-input-limittofirst" placeholder="Limit To First">
+</div>
+
+<div class="form-row">
+  <label for="node-input-ontype"><i class="icon-tag"></i> orderByChild</label>
+  <input type="text" id="node-input-orderbychild" placeholder="orderByChild">
+</div>
+
+
+    <div class="form-row">
         <label for="node-input-cred"><i class="icon-tag"></i> Credentials</label>
         <input type="text" id="node-input-cred" placeholder="Name">
     </div>
+
+  
 
 </script>
 
 <script type="text/x-red" data-help-name="rtdb-on">
     <p>Get data from a path in the rtdb database </p>
 <p>
-input: {"payload": {"path": "foo/bar"}}
+input: {"payload": {"path": "foo/bar" , "ontype" : "child_added" , "limittofirst": 2, "orderbychild": "height"}}
 </p><p>
 output: whatever data was at the path "foo/bar" in the rtdb database</p>
 </p>
+<p> ontype defaults to on "value", please enter a specific type if needed, "child_added"/"child_moved"/"child_changed"/"child_removed"</p>
 </script>

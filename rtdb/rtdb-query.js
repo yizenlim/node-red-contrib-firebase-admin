@@ -32,6 +32,7 @@ module.exports = function(RED) {
         }
         let ref = this.admin.database().ref(path)
 
+        
         // Decorate with queries
         if(msg.payload.queries && msg.payload.queries.length > 0){
           console.log('---------------------  found queries')

@@ -23,18 +23,72 @@ module.exports = function(RED) {
 
     }
 
-    let setUpListener = (path)=>{
+    let setUpListener = (path, ontype , limittofirst, orderbychild)=>{
       console.log('rtdb-on setUpListener for path '+path)
+
+
+      var query;
+      var oldPathQuery;
+      if(path ){
+        
+        query = this.admin.database().ref(path)}
+       else if (oldpath ){
+        oldPathQuery =  this.admin.database().ref(oldpath);
+       }
+    
+       if(orderbychild){
+        if(oldpath){
+         oldPathQuery = oldPathQuery.orderByChild(orderbychild)
+        }
+        if(path){
+          query= query.orderByChild(orderbychild)
+          oldpath = path
+        }  else {
+          console.log('----- rtdb-on got empty path !!')
+          console.dir(config)
+        }
+
+      } 
+       
+      if(orderbychild){
+        if(oldpath){
+         oldPathQuery = oldPathQuery.limitToFirst(limittofirst)
+        }
+        if(path){
+          query= query.limitToFirst(limittofirst)
+          oldpath = path
+        }  else {
+          console.log('----- rtdb-on got empty path !!')
+          console.dir(config)
+        }
+
+      } 
+       
+      if(ontype){
+        if(oldpath){
+         oldPathQuery = oldPathQuery.off(ontype, cb)
+        }
+        if(path){
+          query= query.on(ontype, cb)
+          oldpath = path
+        }  else {
+          console.log('----- rtdb-on got empty path !!')
+          console.dir(config)
+        }
+
+      }  else       
+      
+      {
       if(oldpath){
-        this.admin.database().ref(oldpath).off('value', cb)
+        oldPathQuery = oldPathQuery.off('value', cb)
       }
       if(path){
-        this.admin.database().ref(path).on('value', cb)
+        query= query.on('value', cb)
         oldpath = path
       }  else {
         console.log('----- rtdb-on got empty path !!')
         console.dir(config)
-      }
+      }}
     }
 
     if(config.cred){
@@ -45,6 +99,17 @@ module.exports = function(RED) {
     //console.log('------------------------------- rtdg-get config')
     //console.dir(config)
     this.path = config.path
+    this.ontype = config.ontype
+    this.limittofirst = config.limittofirst
+    this.orderbychild = config.orderbychild
+
+
+    if (this.ontype ){
+      if(this.path){
+        setUpListener(this.path,this.ontype, this.limittofirst,this.orderbychild)
+      }  
+    }
+    else
     if(this.path){
       setUpListener(this.path)
     }
@@ -53,10 +118,15 @@ module.exports = function(RED) {
     //console.log('configuring rtdb-on to listen for messages')
     node.on('input', function(msg) {
       let path = this.path
+      let ontype = this.ontype
+      let limittofirst = this.limittofirst
+      let orderbychild = this.orderbychild
+
       if(msg && msg.payload){
         path = path || msg.payload.path
+        ontype = ontype || msg.payload.ontype
         msgin = msg
-        setUpListener(path)
+        setUpListener(path , ontype , limittofirst, orderbychild)
       }
     }.bind(this));
 

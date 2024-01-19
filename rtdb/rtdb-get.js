@@ -16,7 +16,7 @@ module.exports = function (RED) {
       }
     };
 
-    let callRtdbGet = (path,msg) => {
+    let callRtdbGet = (path, msg) => {
       console.log("* rtdb-get callRtdbGet for path " + path);
       if (path) {
         this.admin
@@ -45,7 +45,7 @@ module.exports = function (RED) {
 
     this.path = config.path;
     if (this.path) {
-      callRtdbGet(this.path);
+      callRtdbGet(this.path,msg);
     }
 
     node.on(

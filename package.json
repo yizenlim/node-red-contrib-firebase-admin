@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-firebase-admin",
-  "version": "1.1.35",
+  "version": "1.1.38",
   "description": "A node-red module that wraps the server-side  admin SDK of firebase, firestore, et.c.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
   "node-red": {
     "nodes": {
       "rtdb-set": "rtdb/rtdb-set.js",
+      "rtdb-update": "rtdb/rtdb-update.js",
       "rtdb-push": "rtdb/rtdb-push.js",
       "rtdb-get": "rtdb/rtdb-get.js",
       "rtdb-on": "rtdb/rtdb-on.js",
