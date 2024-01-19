@@ -29,18 +29,18 @@ module.exports = function(RED) {
 
       var query;
       var oldPathQuery;
-      if(path ){
+      if(path !=null){
         
         query = this.admin.database().ref(path)}
-       else if (oldpath ){
+       if (oldpath!=null ){
         oldPathQuery =  this.admin.database().ref(oldpath);
        }
     
-       if(orderbychild){
-        if(oldpath){
+       if(orderbychild!=null){
+        if(oldpath!=null&& oldPathQuery !=null){
          oldPathQuery = oldPathQuery.orderByChild(orderbychild)
         }
-        if(path){
+        if(path!=null){
           query= query.orderByChild(orderbychild)
           oldpath = path
         }  else {
@@ -50,11 +50,11 @@ module.exports = function(RED) {
 
       } 
        
-      if(limittofirst){
-        if(oldpath){
+      if(limittofirst!=null){
+        if(oldpath!=null&& oldPathQuery !=null){
          oldPathQuery = oldPathQuery.limitToFirst(limittofirst)
         }
-        if(path){
+        if(path!=null){
           query= query.limitToFirst(limittofirst)
           oldpath = path
         }  else {
@@ -64,11 +64,11 @@ module.exports = function(RED) {
 
       } 
        
-      if(ontype){
-        if(oldpath){
+      if(ontype!=null&& oldPathQuery !=null){
+        if(oldpath!=null){
          oldPathQuery = oldPathQuery.off(ontype, cb)
         }
-        if(path){
+        if(path!=null){
           query= query.on(ontype, cb)
           oldpath = path
         }  else {
@@ -79,10 +79,10 @@ module.exports = function(RED) {
       }  else       
       
       {
-      if(oldpath){
+      if(oldpath!=null && oldPathQuery !=null){
         oldPathQuery = oldPathQuery.off('value', cb)
       }
-      if(path){
+      if(path!=null){
         query= query.on('value', cb)
         oldpath = path
       }  else {
