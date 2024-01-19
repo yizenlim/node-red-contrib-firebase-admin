@@ -125,6 +125,10 @@ module.exports = function(RED) {
       if(msg && msg.payload){
         path = path || msg.payload.path
         ontype = ontype || msg.payload.ontype
+        limittofirst = limittofirst || msg.payload.limittofirst
+        orderbychild = orderbychild || msg.payload.orderbychild
+
+        
         msgin = msg
         setUpListener(path , ontype , limittofirst, orderbychild)
       }
