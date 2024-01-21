@@ -9,10 +9,7 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
 
-    if (config.cred) {
-      let c = RED.nodes.getNode(config.cred)
-      this.admin = c.admin
-    }
+  
 
     const cb = (res) => {
       console.log('firebase get result ' + res)
@@ -31,8 +28,11 @@ module.exports = function (RED) {
     let setUpListener = (path, ontype, 
       // limittolast, orderbychild
       ) => {
-      console.log('rtdb-on setUpListener for path ' + path)
 
+        if(ontype==null){
+          ontype ="value";
+        }
+      console.log('rtdb-on setUpListener for path ' + path)
 
       var query= this.admin.database().ref(path);
       var pathString = [];
@@ -99,7 +99,10 @@ module.exports = function (RED) {
 
     }
 
-
+    if (config.cred) {
+      let c = RED.nodes.getNode(config.cred)
+      this.admin = c.admin
+    }
 
     //console.log('------------------------------- rtdg-get config')
     //console.dir(config)
