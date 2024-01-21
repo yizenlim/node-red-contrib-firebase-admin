@@ -38,7 +38,7 @@ module.exports = function(RED) {
         pathString.push({"path":path.toString()})
         query = this.admin.database().ref(path)}
   
-       if(orderbychild!=null && orderbychild != "" && orderbychild !== "undefined"){
+       if(orderbychild!=null  ){
      
         if(path!=null){
           query= query.orderByChild(orderbychild)
@@ -51,7 +51,7 @@ module.exports = function(RED) {
 
       } 
        
-      if(limittolast!=null && limittolast != "" && limittolast !== "undefined"){
+      if(limittolast!=null){
   
         if(path!=null){
           
@@ -65,7 +65,7 @@ module.exports = function(RED) {
 
       } 
        
-      if(ontype!=null&& oldPathQuery !=null){
+      if(ontype!=null){
 
         if(path!=null){
          query.on(ontype, cb)
