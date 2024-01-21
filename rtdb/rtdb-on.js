@@ -23,7 +23,7 @@ module.exports = function(RED) {
         msgin.payload = val
         node.send(msgin)
       } else {
-        node.send({payload: val , })
+        node.send({payload: val  })
       }
 
     }
@@ -93,7 +93,7 @@ module.exports = function(RED) {
         console.log('----- rtdb-on got empty path !!')
         console.dir(config)
       }}
-      node.send({"pathString":pathString})
+      // node.send({"pathString":pathString})
 
       
     }
