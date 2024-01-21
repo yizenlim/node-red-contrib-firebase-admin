@@ -116,7 +116,9 @@ module.exports = function (RED) {
     }
     else
       if (this.path) {
-        setUpListener(this.path, this.ontype, this.limittolast, this.orderbychild)
+        setUpListener(this.path, this.ontype, 
+          // this.limittolast, this.orderbychild
+          )
       }
 
 
