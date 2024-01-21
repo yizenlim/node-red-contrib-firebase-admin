@@ -11,21 +11,24 @@ module.exports = function (RED) {
       this.admin = c.admin;
     }
 
-    const setup = (path) => {
-      if (unsub) {
-        unsub();
-      }
-      unsub = this.admin.firestore().doc(path).onSnapshot(cb);
+    const setup = async (path,msg) => {
+      // if (unsub) {
+      //   unsub();
+      // }
+      unsub = await this.admin.firestore().doc(path).onSnapshot((res)=>{
+        console.log('onSnapshot');
+        cb(res,msg);
+      });
     };
 
-    const cb = (res) => {
+    const cb = (res,msg) => {
       console.log("firestore get result " + res);
       console.dir(res);
       let val = res.data();
       console.log("val=" + val);
-      if (msgin) {
-        msgin.payload = val;
-        node.send(msgin);
+      if (msg) {
+        msg.payload = val;
+        node.send(msg);
       } else {
         node.send({ payload: val });
       }
@@ -37,7 +40,7 @@ module.exports = function (RED) {
         if (msg && msg.payload) {
           msgin = msg;
           const path = msg.payload.path;
-          setup(path);
+          setup(path,msg);
         }
       }.bind(this)
     );
