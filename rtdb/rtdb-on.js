@@ -9,6 +9,11 @@ module.exports = function(RED) {
     RED.nodes.createNode(this, config);
     var node = this;
 
+    if(config.cred){
+      let c = RED.nodes.getNode(config.cred)
+      this.admin = c.admin
+    }
+    
     const cb = (res )=>{
       console.log('firebase get result '+res)
       //console.dir(res)
@@ -93,10 +98,7 @@ module.exports = function(RED) {
       
     }
 
-    if(config.cred){
-      let c = RED.nodes.getNode(config.cred)
-      this.admin = c.admin
-    }
+    
 
     //console.log('------------------------------- rtdg-get config')
     //console.dir(config)
@@ -129,7 +131,6 @@ module.exports = function(RED) {
         ontype = ontype || msg.payload.ontype
         limittolast = limittolast || msg.payload.limittolast
         orderbychild = orderbychild || msg.payload.orderbychild
-
         
         msgin = msg
         setUpListener(path , ontype , limittolast, orderbychild)
