@@ -28,7 +28,7 @@ module.exports = function(RED) {
         let bucket = msg.payload.bucket || msg.bucket || this.bucket
         let global = this.context().global
         this.storage = global.get('cloud-storage')
-        console.log('* storage-read set this.storage to '+this.storage)
+        console.log('* storage-read set this.storage to '+console.dir(this.storage))
         console.log('------------------------------ storage-read reading from bucket "'+bucket+'" path "'+path+'" this.storage = '+this.storage)
         if(msg.payload.files && msg.payload.files.length > 0){
           console.log('--reading from files')
